@@ -14,6 +14,7 @@ The final model detects three specific traffic signs:
 ## 📊 Dataset Overview
 
 The dataset originates from a large European traffic-sign detection corpus, annotated for academic research and autonomous driving applications.
+https://www.vicos.si/resources/dfg/
 
 ### Key characteristics
 - Images collected across **multiple European municipalities**
