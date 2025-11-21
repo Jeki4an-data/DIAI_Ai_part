@@ -56,7 +56,8 @@ Data preparation was done **with plain Python code**, not standalone scripts.
 │ └── val/
 └── labels/
 ├── train/
-└── val/```
+└── val/
+```
 
 Each `.txt` file uses YOLO format:
 
@@ -72,7 +73,8 @@ Coordinates are normalized (0–1).
 The following code keeps **only classes 59, 60, 157**.  
 If a `.txt` file contains none of these — it and its corresponding image are deleted.
 
-```python
+```
+python
 import os
 import shutil
 
@@ -122,19 +124,23 @@ filter_subset(IMG_TRAIN, LBL_TRAIN)
 print("Filtering val...")
 filter_subset(IMG_VAL, LBL_VAL)
 
-print("✔ Filtering completed!")
+
+```
 🔢 2. Class Remapping
 YOLO requires class indices starting at 0.
 
-```Original ID	YOLO ID
+```
+Original ID	YOLO ID
 59	0
 60	1
-157	2```
+157	2
+```
 
 Labels were updated accordingly.
 
 🗂️ data.yaml
-````path: /Users/denisvasilev/Desktop/DFG_yolo
+```
+path: /Users/denisvasilev/Desktop/DFG_yolo
 
 train: images/train
 val: images/val
@@ -144,7 +150,7 @@ nc: 3
 names:
   0: "no_stop"
   1: "no_waiting"
-  2: "parking_for_disabled"```
+  2: "parking_for_disabled"
 🏋️ Model Training (Actual Code Used)
 Training was launched using:
 ```
@@ -157,7 +163,7 @@ model.train(
     epochs=15,
     imgsz=512,
     batch=32,
-    device=cpu,
+    device='cpu',
     amp=True
 )```
 Why YOLOv8m?
@@ -176,8 +182,6 @@ results = model.val(data="data.yaml")
 print(results)
 A custom formatted output summarizes the metrics:
 
-sql
-Копіювати код
 ==================================================
 📊 YOLO Evaluation Results
 ==================================================
