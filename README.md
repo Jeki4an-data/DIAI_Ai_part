@@ -1,3 +1,59 @@
+## 📊 Datasets Used
+
+### 1️⃣ License Plate Detection Dataset  
+The license plate detector (YOLOv8) was trained on a dataset containing:
+
+- Full vehicle images  
+- A single bounding box per image labeled **license_plate**  
+- Mixed day/night conditions and various camera angles  
+- Data converted into YOLO format (`class x_center y_center width height`)
+
+**Goal:** Detect the exact region of the license plate on any vehicle image.
+
+**Dataset composition:**
+- ~40–100 images (custom dataset collected for the hackathon)  
+- `train / val` split  
+- Basic augmentations: flip, blur, brightness and contrast adjustments  
+- One class only: `license_plate`
+
+
+---
+
+### 2️⃣ OCR Character Detection Dataset  
+The OCR model was trained on a separate, larger dataset that contains **cropped license plates**, each annotated at the **character level**.
+
+**Dataset includes:**
+- Cropped plate images  
+- One bounding box per character  
+- YOLO-format labels  
+- 24 character classes:  
+  `0,1,2,3,4,5,6,7,8,9,A,B,C,E,H,I,K,M,O,P,T,X,Y,Z`
+
+**OCR model learns to:**
+- Detect each character individually  
+- Handle one-line and two-line plates  
+- Handle square plates and older formats  
+- Work in different lighting conditions and perspectives
+
+**Dataset composition:**
+- ~2,000–2,500 annotated plate crops  
+- Clear `train / val / test` structure  
+- Heavy augmentations: rotation, noise, blur, perspective distortion
+
+This dataset structure is similar to character-level annotation used in Nomeroff Net.
+
+---
+
+### 🧠 Why Two Datasets?
+
+| Model | Dataset | Purpose |
+|-------|---------|----------|
+| License Plate Detector | Vehicle images with plate bounding boxes | Locate the plate on the image |
+| OCR Model | Cropped plates with character boxes | Read characters one by one |
+
+Using two specialized datasets allows the system to be more accurate, stable, and easier to improve.
+
+
 # Traffic Sign Detection Training (YOLOv8)
 
 This repository documents the complete workflow for training a **3-class traffic sign detection model** using YOLOv8.  
