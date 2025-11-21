@@ -11,11 +11,12 @@ The license plate detector (YOLOv8) was trained on a dataset containing:
 **Goal:** Detect the exact region of the license plate on any vehicle image.
 
 **Dataset composition:**
-- ~40–100 images (custom dataset collected for the hackathon)  
+- 500 images (custom dataset collected for the hackathon)  
 - `train / val` split  
 - Basic augmentations: flip, blur, brightness and contrast adjustments  
 - One class only: `license_plate`
 
+https://nomeroff.net.ua/datasets/ (Public)
 
 ---
 
@@ -70,7 +71,7 @@ The final model detects three specific traffic signs:
 ## 📊 Dataset Overview
 
 The dataset originates from a large European traffic-sign detection corpus, annotated for academic research and autonomous driving applications.
-https://www.vicos.si/resources/dfg/
+https://www.vicos.si/resources/dfg/ (Public)
 
 ### Key characteristics
 - Images collected across **multiple European municipalities**
