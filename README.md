@@ -50,23 +50,18 @@ Data preparation was done **with plain Python code**, not standalone scripts.
 
 ### Final YOLO structure
 
-dataset/
+```dataset/
 ├── images/
 │ ├── train/
 │ └── val/
 └── labels/
 ├── train/
-└── val/
-
-perl
-Копіювати код
+└── val/```
 
 Each `.txt` file uses YOLO format:
 
-class cx cy w h
+```class cx cy w h```
 
-python
-Копіювати код
 
 Coordinates are normalized (0–1).
 
@@ -131,17 +126,15 @@ print("✔ Filtering completed!")
 🔢 2. Class Remapping
 YOLO requires class indices starting at 0.
 
-Original ID	YOLO ID
+```Original ID	YOLO ID
 59	0
 60	1
-157	2
+157	2```
 
 Labels were updated accordingly.
 
 🗂️ data.yaml
-yaml
-Копіювати код
-path: /Users/denisvasilev/Desktop/DFG_yolo
+````path: /Users/denisvasilev/Desktop/DFG_yolo
 
 train: images/train
 val: images/val
@@ -151,12 +144,10 @@ nc: 3
 names:
   0: "no_stop"
   1: "no_waiting"
-  2: "parking_for_disabled"
+  2: "parking_for_disabled"```
 🏋️ Model Training (Actual Code Used)
 Training was launched using:
-
-python
-Копіювати код
+```
 from ultralytics import YOLO
 
 model = YOLO("yolov8m.pt")
@@ -168,7 +159,7 @@ model.train(
     batch=32,
     device=cpu,
     amp=True
-)
+)```
 Why YOLOv8m?
 Better recall on small traffic signs
 
@@ -180,9 +171,7 @@ Faster convergence vs YOLOx/YOLOl models
 
 📊 Model Evaluation
 Executed via:
-
-python
-Копіювати код
+```
 results = model.val(data="data.yaml")
 print(results)
 A custom formatted output summarizes the metrics:
@@ -215,4 +204,4 @@ sql
       Recall:    1.0000
       AP@50:     0.6144
 
-==================================================
+==================================================```
