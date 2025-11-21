@@ -21,35 +21,35 @@ The dataset originates from a large European traffic-sign detection corpus, anno
 - Captured using **vehicle-mounted cameras**
 - Includes shadows, occlusions, blurriness, and perspective distortion
 - All sensitive data anonymized (faces and plates blurred)
-- Initially created for **detection + classification** research
+- Originally designed for **detection + classification** research
 
 ### Annotation format
-- COCO JSON structure
+- COCO JSON structure  
 - Polygons for objects >30px  
-- Bounding boxes for objects 15–30px (marked as *difficult*)
-- 200+ traffic sign categories
+- Bounding boxes for objects 15–30px (marked *difficult*)  
+- 200+ traffic sign categories  
 - ~13,000 tightly annotated signs
 
 ### Why filtering was required
-The goal of the project was to train a lightweight small-class YOLO model.  
-Therefore, only **3 target classes** were extracted:
+The project required a small, fast model to detect only **3 specific traffic sign classes**.
 
 | Original Dataset | After Filtering |
 |------------------|----------------|
 | 200+ classes | 3 classes |
-| ~13k labeled objects | Only IDs 59, 60, 157 |
-| Many annotation types | YOLO bounding boxes only |
-| All images | Only those containing relevant signs |
+| ~13,000 labeled objects | Only IDs 59, 60, 157 |
+| Many varied signs | Only target categories |
+| All images | Only images containing selected classes |
 
-This produced a clean, compact dataset optimized for custom detection tasks.
+This produced a compact, clean YOLO dataset.
 
 ---
 
 ## 📂 YOLO Dataset Preparation
 
-Data preparation was performed with plain Python code (not standalone scripts).
+Data preparation was done **with plain Python code**, not standalone scripts.
 
 ### Final YOLO structure
+
 dataset/
 ├── images/
 │ ├── train/
@@ -58,18 +58,24 @@ dataset/
 ├── train/
 └── val/
 
+perl
+Копіювати код
 
-```Each `.txt` file follows the YOLO format:```
+Each `.txt` file uses YOLO format:
 
+class cx cy w h
 
-All coordinates are normalized to 0–1.
+python
+Копіювати код
+
+Coordinates are normalized (0–1).
 
 ---
 
-## 🧹 1. Class Filtering (real code used)
+## 🧹 1. Class Filtering (Actual Code Used)
 
-Only classes **59, 60, 157** were kept.  
-If a label file contained none of them, the `.txt` and its corresponding image were deleted.
+The following code keeps **only classes 59, 60, 157**.  
+If a `.txt` file contains none of these — it and its corresponding image are deleted.
 
 ```python
 import os
@@ -121,7 +127,92 @@ filter_subset(IMG_TRAIN, LBL_TRAIN)
 print("Filtering val...")
 filter_subset(IMG_VAL, LBL_VAL)
 
-print("✔ Filtering completed!")```
+print("✔ Filtering completed!")
+🔢 2. Class Remapping
+YOLO requires class indices starting at 0.
 
+Original ID	YOLO ID
+59	0
+60	1
+157	2
 
+Labels were updated accordingly.
 
+🗂️ data.yaml
+yaml
+Копіювати код
+path: /Users/denisvasilev/Desktop/DFG_yolo
+
+train: images/train
+val: images/val
+
+nc: 3
+
+names:
+  0: "no_stop"
+  1: "no_waiting"
+  2: "parking_for_disabled"
+🏋️ Model Training (Actual Code Used)
+Training was launched using:
+
+python
+Копіювати код
+from ultralytics import YOLO
+
+model = YOLO("yolov8m.pt")
+
+model.train(
+    data="/",
+    epochs=15,
+    imgsz=512,
+    batch=32,
+    device=cpu,
+    amp=True
+)
+Why YOLOv8m?
+Better recall on small traffic signs
+
+Strong accuracy/speed trade-off
+
+Works well with limited datasets
+
+Faster convergence vs YOLOx/YOLOl models
+
+📊 Model Evaluation
+Executed via:
+
+python
+Копіювати код
+results = model.val(data="data.yaml")
+print(results)
+A custom formatted output summarizes the metrics:
+
+sql
+Копіювати код
+==================================================
+📊 YOLO Evaluation Results
+==================================================
+
+🔹 Overall Metrics:
+   - Precision:        0.9906
+   - Recall:           0.8157
+   - mAP@0.5:          0.9255
+   - mAP@0.5:0.95:     0.7629
+
+🔹 Per-Class Metrics:
+   Class 0 ('no_stop'):
+      Precision: 0.9970
+      Recall:    0.9000
+      AP@50:     0.8550
+
+   Class 1 ('no_waiting'):
+      Precision: 0.9980
+      Recall:    0.9000
+      AP@50:     0.9159
+
+   Class 2 ('parking_for_disabled'):
+      Precision: 0.9990
+      Recall:    1.0000
+      AP@50:     0.6144
+
+==================================================
