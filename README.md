@@ -151,6 +151,7 @@ names:
   0: "no_stop"
   1: "no_waiting"
   2: "parking_for_disabled"
+```
 🏋️ Model Training (Actual Code Used)
 Training was launched using:
 ```
@@ -165,7 +166,8 @@ model.train(
     batch=32,
     device='cpu',
     amp=True
-)```
+)
+```
 Why YOLOv8m?
 Better recall on small traffic signs
 
@@ -180,8 +182,9 @@ Executed via:
 ```
 results = model.val(data="data.yaml")
 print(results)
+```
 A custom formatted output summarizes the metrics:
-
+```
 ==================================================
 📊 YOLO Evaluation Results
 ==================================================
@@ -208,4 +211,4 @@ A custom formatted output summarizes the metrics:
       Recall:    1.0000
       AP@50:     0.6144
 
-==================================================```
+==================================================
