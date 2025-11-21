@@ -50,4 +50,78 @@ This produced a clean, compact dataset optimized for custom detection tasks.
 Data preparation was performed with plain Python code (not standalone scripts).
 
 ### Final YOLO structure
+dataset/
+├── images/
+│ ├── train/
+│ └── val/
+└── labels/
+├── train/
+└── val/
+
+
+```Each `.txt` file follows the YOLO format:```
+
+
+All coordinates are normalized to 0–1.
+
+---
+
+## 🧹 1. Class Filtering (real code used)
+
+Only classes **59, 60, 157** were kept.  
+If a label file contained none of them, the `.txt` and its corresponding image were deleted.
+
+```python
+import os
+import shutil
+
+SELECTED = [59, 60, 157]
+
+BASE = "/"  # dataset path
+IMG_TRAIN = f"{BASE}/images/train"
+IMG_VAL   = f"{BASE}/images/val"
+LBL_TRAIN = f"{BASE}/labels/train"
+LBL_VAL   = f"{BASE}/labels/val"
+
+def filter_subset(img_dir, lbl_dir):
+    for lbl_file in os.listdir(lbl_dir):
+        if not lbl_file.endswith(".txt"):
+            continue
+
+        lbl_path = f"{lbl_dir}/{lbl_file}"
+
+        with open(lbl_path, "r") as f:
+            lines = f.readlines()
+
+        new_lines = []
+        for line in lines:
+            cls = int(line.split()[0])
+            if cls in SELECTED:
+                new_lines.append(line)
+
+        if len(new_lines) == 0:
+            os.remove(lbl_path)
+
+            img_jpg = lbl_file.replace(".txt", ".jpg")
+            img_png = lbl_file.replace(".txt", ".png")
+
+            if os.path.exists(f"{img_dir}/{img_jpg}"):
+                os.remove(f"{img_dir}/{img_jpg}")
+
+            if os.path.exists(f"{img_dir}/{img_png}"):
+                os.remove(f"{img_dir}/{img_png}")
+            continue
+
+        with open(lbl_path, "w") as f:
+            f.writelines(new_lines)
+
+print("Filtering train...")
+filter_subset(IMG_TRAIN, LBL_TRAIN)
+
+print("Filtering val...")
+filter_subset(IMG_VAL, LBL_VAL)
+
+print("✔ Filtering completed!")```
+
+
 
