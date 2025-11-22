@@ -57,6 +57,8 @@ This dataset structure is similar to character-level annotation used in Nomeroff
 
 
 Using two specialized datasets allows the system to be more accurate, stable, and easier to improve.
+<img width="1280" height="474" alt="image" src="https://github.com/user-attachments/assets/62800f6e-0b3a-4f82-8814-7709e9a2b443" />
+
 
 
 # Traffic Sign Detection Training (YOLOv8)
