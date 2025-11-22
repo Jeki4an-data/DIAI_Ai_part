@@ -29,6 +29,8 @@ The OCR model was trained on a separate, larger dataset that contains **cropped 
 - YOLO-format labels  
 - 24 character classes:  
   `0,1,2,3,4,5,6,7,8,9,A,B,C,E,H,I,K,M,O,P,T,X,Y,Z`
+  
+https://zenodo.org/records/13342103 (Public)
 
 **OCR model learns to:**
 - Detect each character individually  
@@ -42,7 +44,7 @@ The OCR model was trained on a separate, larger dataset that contains **cropped 
 - Heavy augmentations: rotation, noise, blur, perspective distortion
 
 This dataset structure is similar to character-level annotation used in Nomeroff Net.
-
+<img width="1122" height="279" alt="image" src="https://github.com/user-attachments/assets/cc3f1dd1-f01c-4f9e-8ad5-6eb73d97c150" />
 ---
 
 ### 🧠 Why Two Datasets?
@@ -52,7 +54,6 @@ This dataset structure is similar to character-level annotation used in Nomeroff
 | License Plate Detector | Vehicle images with plate bounding boxes | Locate the plate on the image |
 | OCR Model | Cropped plates with character boxes | Read characters one by one |
 
-<img width="1122" height="279" alt="image" src="https://github.com/user-attachments/assets/cc3f1dd1-f01c-4f9e-8ad5-6eb73d97c150" />
 
 
 Using two specialized datasets allows the system to be more accurate, stable, and easier to improve.
